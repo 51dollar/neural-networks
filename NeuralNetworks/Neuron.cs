@@ -35,6 +35,15 @@
             return result;
         }
 
+        public void SetWeigths(params double[] weights)
+        {
+            // TODO: Удалить после обучения сети
+            for (int i = 0; i < weights.Length; i++)
+            {
+                Weights[i] = weights[i];
+            }
+        }
+
         public override string ToString()
         {
             return Output.ToString();
