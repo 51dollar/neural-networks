@@ -25,7 +25,15 @@
                 sum += inputs[i] * Weights[i];
             }
 
-            Output = Sigmoid(sum);
+            if (NeuronType != NeuronType.Input)
+            {
+                Output = Sigmoid(sum);
+            }
+            else
+            {
+                Output = sum;
+            }
+
             return Output;
         }
 
