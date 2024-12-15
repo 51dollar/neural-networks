@@ -6,14 +6,51 @@
         [TestMethod()]
         public void FeedForwardTest()
         {
-            var topology = new Topology(4, 1, 2);
+            var dataset = new List<Tuple<double, double[]>>
+            {
+                // Результат - Болен - 1
+                //             Здоров - 0
+
+                // Tемпература - Т
+                // Возраст - А
+                // Курит - S
+                // Правильно питается - F
+                //                                             T  A  S  F
+                new Tuple<double, double[]> (0, new double[] { 0, 0, 0, 0 }),
+                new Tuple<double, double[]> (0, new double[] { 0, 0, 0, 1 }),
+                new Tuple<double, double[]> (1, new double[] { 0, 0, 1, 0 }),
+                new Tuple<double, double[]> (0, new double[] { 0, 0, 1, 1 }),
+                new Tuple<double, double[]> (0, new double[] { 0, 1, 0, 0 }),
+                new Tuple<double, double[]> (0, new double[] { 0, 1, 0, 1 }),
+                new Tuple<double, double[]> (1, new double[] { 0, 1, 1, 0 }),
+                new Tuple<double, double[]> (0, new double[] { 0, 1, 1, 1 }),
+                new Tuple<double, double[]> (1, new double[] { 1, 0, 0, 0 }),
+                new Tuple<double, double[]> (1, new double[] { 1, 0, 0, 1 }),
+                new Tuple<double, double[]> (1, new double[] { 1, 0, 1, 0 }),
+                new Tuple<double, double[]> (1, new double[] { 1, 0, 1, 1 }),
+                new Tuple<double, double[]> (1, new double[] { 1, 1, 0, 0 }),
+                new Tuple<double, double[]> (0, new double[] { 1, 1, 0, 1 }),
+                new Tuple<double, double[]> (1, new double[] { 1, 1, 1, 0 }),
+                new Tuple<double, double[]> (1, new double[] { 1, 1, 1, 1 })
+            };
+
+            var topology = new Topology(4, 1, 0.1, 2);
             var neuralNetwork = new NeuralNetwork(topology);
+            var difference = neuralNetwork.Learn(dataset, 100000);
 
-            neuralNetwork.Layers[1].Neurons[0].SetWeigths(0.5, -0.1, 0.3, -0.1);
-            neuralNetwork.Layers[1].Neurons[1].SetWeigths(0.1, -0.3, 0.7, -0.3);
-            neuralNetwork.Layers[2].Neurons[0].SetWeigths(1.2, 0.8);
+            var results = new List<double>();
+            foreach (var data in dataset)
+            {
+                var res = neuralNetwork.FeedForward(data.Item2).Output;
+                results.Add(res);
+            }
 
-            var result = neuralNetwork.FeedForward(new List<double> { 1, 0, 0, 0 });
+            for (int i = 0; i < results.Count; i++)
+            {
+                var expected = Math.Round(dataset[i].Item1, 3);
+                var actual = Math.Round(results[i], 3);
+                Assert.AreEqual(expected, actual);
+            }
         }
     }
 }
