@@ -12,17 +12,18 @@ namespace NeuralNetworks
 
             var result = new List<int>();
 
-            Bitmap image = new Bitmap(path);
-            Height = image.Height;
-            Width = image.Width;
+            var image = new Bitmap(path);
+            var resuzeImage = new Bitmap(image, new Size(20, 20));
+            Height = resuzeImage.Height;
+            Width = resuzeImage.Width;
 
-            for (int y = 0; y < image.Height; y++)
+            for (int y = 0; y < resuzeImage.Height; y++)
             {
-                for (int x = 0; x < image.Width; x++)
+                for (int x = 0; x < resuzeImage.Width; x++)
                 {
-                    var pixel = image.GetPixel(x, y);
-                    var value = (int)Brightness(pixel);
-                    result.Add(value);
+                    var pixel = resuzeImage.GetPixel(x, y);
+                    var value = Brightness(pixel);
+                    result.Add((int)value);
                 }
             }
 
