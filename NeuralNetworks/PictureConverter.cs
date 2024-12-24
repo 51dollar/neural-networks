@@ -7,10 +7,10 @@ namespace NeuralNetworks
         public int Boundary { get; set; } = 128;
         public int Height { get; set; }
         public int Width { get; set; }
-        public List<int> Convert(string path)
+        public double[] Convert(string path)
         {
 
-            var result = new List<int>();
+            var result = new List<double>();
 
             var image = new Bitmap(path);
             var resuzeImage = new Bitmap(image, new Size(20, 20));
@@ -23,11 +23,11 @@ namespace NeuralNetworks
                 {
                     var pixel = resuzeImage.GetPixel(x, y);
                     var value = Brightness(pixel);
-                    result.Add((int)value);
+                    result.Add(value);
                 }
             }
 
-            return result;
+            return result.ToArray();
         }
 
         private double Brightness(Color pixel)
